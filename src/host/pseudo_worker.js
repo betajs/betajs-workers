@@ -6,7 +6,7 @@ Scoped.define("module:Host.PseudoWorker", [
 	/**
 	 * PseudoWorker Class, emulating a worker in the same thread.
 	 * 
-	 * @class BetaJS.Workers.Host.PseudoWorker
+	 * @class BetaJS.Workers.PseudoWorker
 	 */
 	return Class.extend({scoped: scoped}, [EventsMixin, {
 		
@@ -25,7 +25,7 @@ Scoped.define("module:Host.PseudoWorker", [
 		 * 
 		 * @param data Data to be posted
 		 */
-		postMessage: function (data) {
+		postMessage: function (data, transfer) {
 			this.__peer.triggerAsync("message", data);
 		},
 		

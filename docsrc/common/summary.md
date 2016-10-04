@@ -1,1 +1,1 @@
-TODO. This is work in progress.
+This module allows you to communicate with webworkers and to augment webworkers with access to function of the host. Work in progress.

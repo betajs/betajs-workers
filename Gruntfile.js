@@ -19,8 +19,9 @@ module.exports = function(grunt) {
     .uglifyTask('uglify-scoped', 'dist/' + dist + '.js', 'dist/' + dist + '.min.js')
 
     /* Testing */
+    .browserqunitTask(null, "tests/tests.html", true)
     .qunitTask(null, './dist/' + dist + '-noscoped.js',
-    				 grunt.file.expand("./tests/*/*.js"),
+    				 grunt.file.expand("./tests/tests/*.js"),
     		         ['./vendors/scoped.js', './vendors/beta-noscoped.js'])
     .closureTask(null, ["./vendors/scoped.js", "./vendors/beta-noscoped.js", "./dist/betajs-workers-noscoped.js"])
     .browserstackTask(null, 'tests/tests.html', {desktop: true, mobile: false})
@@ -45,6 +46,6 @@ module.exports = function(grunt) {
 	grunt.initConfig(gruntHelper.config);	
 
 	grunt.registerTask('default', ['package', 'readme', 'license', 'codeclimate', 'travis', 'scopedclosurerevision', 'concat-scoped', 'uglify-noscoped', 'uglify-scoped']);
-	grunt.registerTask('check', [ 'lint', 'qunit' ]);
+	grunt.registerTask('check', [ 'lint', 'qunit', 'browserqunit' ]);
 
 };

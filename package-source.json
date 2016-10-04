@@ -18,6 +18,8 @@
 		"grunt-wget": "",
 		"grunt-jsdoc": "",
 		"grunt-shell": "",
+		"grunt-contrib-connect": "",
+		"webworker-threads": "",
 		"grunt-template": "",
 		"grunt-benchmark": "",
 		"grunt-betajs-docs-compile": "",

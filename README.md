@@ -1,4 +1,4 @@
-# betajs-workers 1.0.1
+# betajs-workers 0.0.1
 [![Build Status](https://api.travis-ci.org/betajs/betajs-workers.svg?branch=master)](https://travis-ci.org/betajs/betajs-workers)
 [![Code Climate](https://codeclimate.com/github/betajs/betajs-workers/badges/gpa.svg)](https://codeclimate.com/github/betajs/betajs-workers)
 
@@ -10,14 +10,36 @@ BetaJS-Workers is a light-weight library for accessing web workers uniformly and
 ## Getting Started
 
 
-TODO. This is work in progress.
+You can use the library in the browser, in your NodeJS project, webworkers and compile it as well.
+
+#### Browser
+
+```javascript
+	<script src="betajs/dist/betajs.min.js"></script>
+	<script src="betajs-workers/dist/betajs-workers.min.js"></script>
+``` 
+
+#### NodeJS
+
+```javascript
+	var BetaJS = require('betajs/dist/beta.js');
+	require('betajs-workers/dist/betajs-workers.js');
+```
+
+#### Compile
+
+```javascript
+	git clone https://github.com/betajs/betajs-workers.git
+	npm install
+	grunt
+```
 
 
 
 ## Basic Usage
 
 
-TODO. This is work in progress.
+This module allows you to communicate with webworkers and to augment webworkers with access to function of the host. Work in progress.
 
 
 ## Links
