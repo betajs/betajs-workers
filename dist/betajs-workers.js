@@ -1,5 +1,5 @@
 /*!
-betajs-workers - v0.0.1 - 2016-10-04
+betajs-workers - v0.0.2 - 2016-10-05
 Copyright (c) Oliver Friedmann
 Apache-2.0 Software License.
 */
@@ -1004,7 +1004,7 @@ Public.exports();
 	return Public;
 }).call(this);
 /*!
-betajs-workers - v0.0.1 - 2016-10-04
+betajs-workers - v0.0.2 - 2016-10-05
 Copyright (c) Oliver Friedmann
 Apache-2.0 Software License.
 */
@@ -1016,7 +1016,7 @@ Scoped.binding('base', 'global:BetaJS');
 Scoped.define("module:", function () {
 	return {
     "guid": "9f1e96ea-528c-4110-83f8-76fa9a8900d3",
-    "version": "1.1475608783940"
+    "version": "2.1475682548678"
 };
 });
 Scoped.assumeVersion('base:version', 557);
@@ -1253,6 +1253,32 @@ Scoped.define("module:Host.TimerAugment", [
 	}).register("host:timer");
 });
 
+
+
+Scoped.define("module:Host.LocalStorageAugment", [
+	"module:Common.WorkerAugment"
+], function (WorkerAugment, scoped) {
+	return WorkerAugment.extend({scoped: scoped}, function (inherited) {
+		return {
+						
+			intf: {
+				localStorageGetItem: function (item, id) {
+					this.augmentCall("localStorageGetItemCallback", localStorage.getItem(item), id);
+				},
+				
+				localStorageSetItem: function (item, value) {
+					localStorage.setItem(item, value);
+				},
+				
+				localStorageRemoveItem: function (item) {
+					localStorage.removeItem(item);
+				}
+			}
+			
+		};
+	}).register("host:localStorage");
+});
+
 Scoped.define("module:Host.PseudoWorker", [
     "base:Class",
     "base:Events.EventsMixin"
@@ -1415,12 +1441,63 @@ Scoped.define("module:Client.TimerAugment", [
 					if (this.__callbacks[id])
 						this.__callbacks[id].call(this);
 				}
-			},
-			
-			receive: ["timeoutCallback", "intervalCallback"]
+			}
 			
 		};
 	}).register("client:timer");
+});
+
+
+
+
+Scoped.define("module:Client.LocalStorageAugment", [
+	"module:Common.WorkerAugment",
+	"base:Promise",
+	"base:Objs",
+	"base:Functions"
+], function (WorkerAugment, Promise, Objs, Functions, scoped) {
+	return WorkerAugment.extend({scoped: scoped}, function (inherited) {
+		return {
+						
+			constructor: function (parent) {
+				inherited.constructor.call(this, parent);
+				this.__id = 0;
+				this.__callbacks = {};
+				if (!Scoped.getGlobal("localStorage")) {
+					Scoped.setGlobal("localStorage", Objs.map(this.send, function (method) {
+						return Functions.as_method(method, this);
+					}, this));
+				}
+			},
+			
+			send: {
+				getItem: function (item) {
+					this.__id++;
+					this.__callbacks[this.__id] = Promise.create();
+					this.augmentCall("localStorageGetItem", item, this.__id);
+					return this.__callbacks[this.__id];
+				},
+				
+				setItem: function (item, value) {
+					this.augmentCall("localStorageSetItem", item, value);
+				},
+				
+				removeItem: function (item) {
+					this.augmentCall("localStorageRemoveItem", item);
+				}
+			},
+			
+			intf: {
+				localStorageGetItemCallback: function (value, id) {
+					if (this.__callbacks[id]) {
+						this.__callbacks[id].asyncSuccess(value);
+						delete this.__callbacks[id];
+					}
+				}
+			}
+			
+		};
+	}).register("client:localStorage");
 });
 
 }).call(Scoped);

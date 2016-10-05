@@ -66,10 +66,61 @@ Scoped.define("module:Client.TimerAugment", [
 					if (this.__callbacks[id])
 						this.__callbacks[id].call(this);
 				}
-			},
-			
-			receive: ["timeoutCallback", "intervalCallback"]
+			}
 			
 		};
 	}).register("client:timer");
+});
+
+
+
+
+Scoped.define("module:Client.LocalStorageAugment", [
+	"module:Common.WorkerAugment",
+	"base:Promise",
+	"base:Objs",
+	"base:Functions"
+], function (WorkerAugment, Promise, Objs, Functions, scoped) {
+	return WorkerAugment.extend({scoped: scoped}, function (inherited) {
+		return {
+						
+			constructor: function (parent) {
+				inherited.constructor.call(this, parent);
+				this.__id = 0;
+				this.__callbacks = {};
+				if (!Scoped.getGlobal("localStorage")) {
+					Scoped.setGlobal("localStorage", Objs.map(this.send, function (method) {
+						return Functions.as_method(method, this);
+					}, this));
+				}
+			},
+			
+			send: {
+				getItem: function (item) {
+					this.__id++;
+					this.__callbacks[this.__id] = Promise.create();
+					this.augmentCall("localStorageGetItem", item, this.__id);
+					return this.__callbacks[this.__id];
+				},
+				
+				setItem: function (item, value) {
+					this.augmentCall("localStorageSetItem", item, value);
+				},
+				
+				removeItem: function (item) {
+					this.augmentCall("localStorageRemoveItem", item);
+				}
+			},
+			
+			intf: {
+				localStorageGetItemCallback: function (value, id) {
+					if (this.__callbacks[id]) {
+						this.__callbacks[id].asyncSuccess(value);
+						delete this.__callbacks[id];
+					}
+				}
+			}
+			
+		};
+	}).register("client:localStorage");
 });

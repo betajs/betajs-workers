@@ -54,3 +54,29 @@ Scoped.define("module:Host.TimerAugment", [
 		};
 	}).register("host:timer");
 });
+
+
+
+Scoped.define("module:Host.LocalStorageAugment", [
+	"module:Common.WorkerAugment"
+], function (WorkerAugment, scoped) {
+	return WorkerAugment.extend({scoped: scoped}, function (inherited) {
+		return {
+						
+			intf: {
+				localStorageGetItem: function (item, id) {
+					this.augmentCall("localStorageGetItemCallback", localStorage.getItem(item), id);
+				},
+				
+				localStorageSetItem: function (item, value) {
+					localStorage.setItem(item, value);
+				},
+				
+				localStorageRemoveItem: function (item) {
+					localStorage.removeItem(item);
+				}
+			}
+			
+		};
+	}).register("host:localStorage");
+});
