@@ -124,3 +124,4 @@ Scoped.define("module:Client.LocalStorageAugment", [
 		};
 	}).register("client:localStorage");
 });
+

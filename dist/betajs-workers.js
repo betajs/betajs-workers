@@ -1,5 +1,5 @@
 /*!
-betajs-workers - v0.0.2 - 2016-10-05
+betajs-workers - v0.0.3 - 2016-10-05
 Copyright (c) Oliver Friedmann
 Apache-2.0 Software License.
 */
@@ -1004,7 +1004,7 @@ Public.exports();
 	return Public;
 }).call(this);
 /*!
-betajs-workers - v0.0.2 - 2016-10-05
+betajs-workers - v0.0.3 - 2016-10-05
 Copyright (c) Oliver Friedmann
 Apache-2.0 Software License.
 */
@@ -1016,10 +1016,138 @@ Scoped.binding('base', 'global:BetaJS');
 Scoped.define("module:", function () {
 	return {
     "guid": "9f1e96ea-528c-4110-83f8-76fa9a8900d3",
-    "version": "2.1475682548678"
+    "version": "3.1475689956748"
 };
 });
 Scoped.assumeVersion('base:version', 557);
+Scoped.define("module:Client.TimerAugment", [
+	"module:Common.WorkerAugment",
+	"base:Functions",
+	"base:Objs"
+], function (WorkerAugment, Functions, Objs, scoped) {
+	return WorkerAugment.extend({scoped: scoped}, function (inherited) {
+		return {
+						
+			constructor: function (parent) {
+				inherited.constructor.call(this, parent);
+				var self = this;
+				this.__id = 0;
+				this.__names = [];
+				this.__callbacks = {};
+				Objs.iter(this.send, function (method, name) {
+					if (Scoped.getGlobal(name))
+						return;
+					Scoped.setGlobal(name, Functions.as_method(method, this));
+					this.__names.push(name);
+				}, this);
+			},
+			
+			send: {
+				setTimeout: function (func, delay) {
+					this.__id++;
+					this.__callbacks[this.__id] = func;
+					this.augmentCall("setTimeout", this.__id, delay);
+					return this.__id;
+				},
+			
+				setInterval: function (func, delay) {
+					this.__id++;
+					this.__callbacks[this.__id] = func;
+					this.augmentCall("setTimeout", this.__id, delay);
+					return this.__id;
+				},
+				
+				clearTimeout: function (id) {
+					this.augmentCall("clearTimeout", id);
+					delete this.__callbacks[id];
+				},
+				
+				clearInterval: function (id) {
+					this.augmentCall("clearInterval", id);
+					delete this.__callbacks[id];
+				}
+
+			},
+			
+			destroy: function () {
+				Objs.iter(this.__names, function (name) {
+					Scoped.setGlobal(name, null);
+				});
+				inherited.destroy.call(this);
+			},
+
+			intf: {
+				timeoutCallback: function (id) {
+					if (this.__callbacks[id]) {
+						this.__callbacks[id].call(this);
+						delete this.__callbacks[id];
+					}
+				},
+
+				intervalCallback: function (id) {
+					if (this.__callbacks[id])
+						this.__callbacks[id].call(this);
+				}
+			}
+			
+		};
+	}).register("client:timer");
+});
+
+
+
+
+Scoped.define("module:Client.LocalStorageAugment", [
+	"module:Common.WorkerAugment",
+	"base:Promise",
+	"base:Objs",
+	"base:Functions"
+], function (WorkerAugment, Promise, Objs, Functions, scoped) {
+	return WorkerAugment.extend({scoped: scoped}, function (inherited) {
+		return {
+						
+			constructor: function (parent) {
+				inherited.constructor.call(this, parent);
+				this.__id = 0;
+				this.__callbacks = {};
+				if (!Scoped.getGlobal("localStorage")) {
+					Scoped.setGlobal("localStorage", Objs.map(this.send, function (method) {
+						return Functions.as_method(method, this);
+					}, this));
+				}
+			},
+			
+			send: {
+				getItem: function (item) {
+					this.__id++;
+					this.__callbacks[this.__id] = Promise.create();
+					this.augmentCall("localStorageGetItem", item, this.__id);
+					return this.__callbacks[this.__id];
+				},
+				
+				setItem: function (item, value) {
+					this.augmentCall("localStorageSetItem", item, value);
+				},
+				
+				removeItem: function (item) {
+					this.augmentCall("localStorageRemoveItem", item);
+				}
+			},
+			
+			intf: {
+				localStorageGetItemCallback: function (value, id) {
+					if (this.__callbacks[id]) {
+						this.__callbacks[id].asyncSuccess(value);
+						delete this.__callbacks[id];
+					}
+				}
+			}
+			
+		};
+	}).register("client:localStorage");
+});
+
+
 Scoped.define("module:Common.AugmentedWorker", [
     "base:Class",
     "base:Events.EventsMixin",
@@ -1043,26 +1171,27 @@ Scoped.define("module:Common.AugmentedWorker", [
 				}, this);
 				var self = this;
 				this.__worker.addEventListener("message", function (data) {
-					if (data.data.augment) {
+					if (data.data.augment)
 						self._receiveAugment(data.data.augment.message, data.data.augment.data);
-					} else if (data.data.data) {
-						self.trigger("message", data.data);
-					}
+					else if (data.data.data)
+						self._receiveMessage(data.data);
 				});
+				this.__worker.addEventListener("error", function (e) {
+					self._receiveError(e);
+				});
+			},
+			
+			worker: function () {
+				return this.__worker;
 			},
 			
 			postMessage: function (data, transfer) {
 				this.__worker.postMessage({data: data}, transfer);
+				return this;
 			},
 
 			addEventListener: function (event, callback) {
-				if (event === "message") {
-					this.on(event, function (data) {
-						callback.call(this, data);
-					}, this);
-				} else {
-					this.on(event, callback);
-				}
+				this.on(event, callback);
 				return this;
 			},
 			
@@ -1079,6 +1208,18 @@ Scoped.define("module:Common.AugmentedWorker", [
 				var obj = this.__receive[message];
 				if (obj)
 					obj[message].apply(obj, data);
+			},
+			
+			_receiveMessage: function (data) {
+				this.trigger("message", data);
+				if (this.onmessage)
+					this.onmessage(data);
+			},
+			
+			_receiveError: function (e) {
+				this.trigger("error", e);
+				if (this.onerror)
+					this.onerror(e);
 			}
 		
 		};
@@ -1100,13 +1241,17 @@ Scoped.define("module:Common.WorkerAugment", [
 		
 			constructor: function (parent) {
 				inherited.constructor.call(this);
-				this._parent = parent;
+				this.__parent = parent;
 			},
 			
 			intf: {},
 			
+			parent: function () {
+				return this.__parent;
+			},
+			
 			augmentCall: function (method) {
-				this._parent.augmentCall(method, Functions.getArguments(arguments, 1));
+				this.__parent.augmentCall(method, Functions.getArguments(arguments, 1));
 			}
 
 		};
@@ -1279,6 +1424,7 @@ Scoped.define("module:Host.LocalStorageAugment", [
 	}).register("host:localStorage");
 });
 
+
 Scoped.define("module:Host.PseudoWorker", [
     "base:Class",
     "base:Events.EventsMixin"
@@ -1373,131 +1519,4 @@ Scoped.define("module:Host.PseudoWorker", [
 		
 	});
 });
-Scoped.define("module:Client.TimerAugment", [
-	"module:Common.WorkerAugment",
-	"base:Functions",
-	"base:Objs"
-], function (WorkerAugment, Functions, Objs, scoped) {
-	return WorkerAugment.extend({scoped: scoped}, function (inherited) {
-		return {
-						
-			constructor: function (parent) {
-				inherited.constructor.call(this, parent);
-				var self = this;
-				this.__id = 0;
-				this.__names = [];
-				this.__callbacks = {};
-				Objs.iter(this.send, function (method, name) {
-					if (Scoped.getGlobal(name))
-						return;
-					Scoped.setGlobal(name, Functions.as_method(method, this));
-					this.__names.push(name);
-				}, this);
-			},
-			
-			send: {
-				setTimeout: function (func, delay) {
-					this.__id++;
-					this.__callbacks[this.__id] = func;
-					this.augmentCall("setTimeout", this.__id, delay);
-					return this.__id;
-				},
-			
-				setInterval: function (func, delay) {
-					this.__id++;
-					this.__callbacks[this.__id] = func;
-					this.augmentCall("setTimeout", this.__id, delay);
-					return this.__id;
-				},
-				
-				clearTimeout: function (id) {
-					this.augmentCall("clearTimeout", id);
-					delete this.__callbacks[id];
-				},
-				
-				clearInterval: function (id) {
-					this.augmentCall("clearInterval", id);
-					delete this.__callbacks[id];
-				}
-
-			},
-			
-			destroy: function () {
-				Objs.iter(this.__names, function (name) {
-					Scoped.setGlobal(name, null);
-				});
-				inherited.destroy.call(this);
-			},
-
-			intf: {
-				timeoutCallback: function (id) {
-					if (this.__callbacks[id]) {
-						this.__callbacks[id].call(this);
-						delete this.__callbacks[id];
-					}
-				},
-
-				intervalCallback: function (id) {
-					if (this.__callbacks[id])
-						this.__callbacks[id].call(this);
-				}
-			}
-			
-		};
-	}).register("client:timer");
-});
-
-
-
-
-Scoped.define("module:Client.LocalStorageAugment", [
-	"module:Common.WorkerAugment",
-	"base:Promise",
-	"base:Objs",
-	"base:Functions"
-], function (WorkerAugment, Promise, Objs, Functions, scoped) {
-	return WorkerAugment.extend({scoped: scoped}, function (inherited) {
-		return {
-						
-			constructor: function (parent) {
-				inherited.constructor.call(this, parent);
-				this.__id = 0;
-				this.__callbacks = {};
-				if (!Scoped.getGlobal("localStorage")) {
-					Scoped.setGlobal("localStorage", Objs.map(this.send, function (method) {
-						return Functions.as_method(method, this);
-					}, this));
-				}
-			},
-			
-			send: {
-				getItem: function (item) {
-					this.__id++;
-					this.__callbacks[this.__id] = Promise.create();
-					this.augmentCall("localStorageGetItem", item, this.__id);
-					return this.__callbacks[this.__id];
-				},
-				
-				setItem: function (item, value) {
-					this.augmentCall("localStorageSetItem", item, value);
-				},
-				
-				removeItem: function (item) {
-					this.augmentCall("localStorageRemoveItem", item);
-				}
-			},
-			
-			intf: {
-				localStorageGetItemCallback: function (value, id) {
-					if (this.__callbacks[id]) {
-						this.__callbacks[id].asyncSuccess(value);
-						delete this.__callbacks[id];
-					}
-				}
-			}
-			
-		};
-	}).register("client:localStorage");
-});
-
 }).call(Scoped);

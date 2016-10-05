@@ -1,4 +1,4 @@
-# betajs-workers 0.0.2
+# betajs-workers 0.0.3
 [![Build Status](https://api.travis-ci.org/betajs/betajs-workers.svg?branch=master)](https://travis-ci.org/betajs/betajs-workers)
 [![Code Climate](https://codeclimate.com/github/betajs/betajs-workers/badges/gpa.svg)](https://codeclimate.com/github/betajs/betajs-workers)
 

@@ -1,6 +1,6 @@
 {
 	"name": "betajs-workers",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"description": "BetaJS-Workers is a light-weight library for accessing web workers uniformly and conveniently.",
 	"contributors": ["Oliver Friedmann"],
 	"devDependencies": {

@@ -21,26 +21,27 @@ Scoped.define("module:Common.AugmentedWorker", [
 				}, this);
 				var self = this;
 				this.__worker.addEventListener("message", function (data) {
-					if (data.data.augment) {
+					if (data.data.augment)
 						self._receiveAugment(data.data.augment.message, data.data.augment.data);
-					} else if (data.data.data) {
-						self.trigger("message", data.data);
-					}
+					else if (data.data.data)
+						self._receiveMessage(data.data);
 				});
+				this.__worker.addEventListener("error", function (e) {
+					self._receiveError(e);
+				});
+			},
+			
+			worker: function () {
+				return this.__worker;
 			},
 			
 			postMessage: function (data, transfer) {
 				this.__worker.postMessage({data: data}, transfer);
+				return this;
 			},
 
 			addEventListener: function (event, callback) {
-				if (event === "message") {
-					this.on(event, function (data) {
-						callback.call(this, data);
-					}, this);
-				} else {
-					this.on(event, callback);
-				}
+				this.on(event, callback);
 				return this;
 			},
 			
@@ -57,6 +58,18 @@ Scoped.define("module:Common.AugmentedWorker", [
 				var obj = this.__receive[message];
 				if (obj)
 					obj[message].apply(obj, data);
+			},
+			
+			_receiveMessage: function (data) {
+				this.trigger("message", data);
+				if (this.onmessage)
+					this.onmessage(data);
+			},
+			
+			_receiveError: function (e) {
+				this.trigger("error", e);
+				if (this.onerror)
+					this.onerror(e);
 			}
 		
 		};
@@ -78,13 +91,17 @@ Scoped.define("module:Common.WorkerAugment", [
 		
 			constructor: function (parent) {
 				inherited.constructor.call(this);
-				this._parent = parent;
+				this.__parent = parent;
 			},
 			
 			intf: {},
 			
+			parent: function () {
+				return this.__parent;
+			},
+			
 			augmentCall: function (method) {
-				this._parent.augmentCall(method, Functions.getArguments(arguments, 1));
+				this.__parent.augmentCall(method, Functions.getArguments(arguments, 1));
 			}
 
 		};

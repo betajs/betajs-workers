@@ -80,3 +80,4 @@ Scoped.define("module:Host.LocalStorageAugment", [
 		};
 	}).register("host:localStorage");
 });
+
