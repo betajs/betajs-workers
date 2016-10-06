@@ -1,5 +1,5 @@
 /*!
-betajs-workers - v0.0.3 - 2016-10-05
+betajs-workers - v0.0.4 - 2016-10-06
 Copyright (c) Oliver Friedmann
 Apache-2.0 Software License.
 */
@@ -11,7 +11,7 @@ Scoped.binding('base', 'global:BetaJS');
 Scoped.define("module:", function () {
 	return {
     "guid": "9f1e96ea-528c-4110-83f8-76fa9a8900d3",
-    "version": "3.1475689956748"
+    "version": "4.1475768410002"
 };
 });
 Scoped.assumeVersion('base:version', 557);
@@ -202,7 +202,7 @@ Scoped.define("module:Common.AugmentedWorker", [
 			_receiveAugment: function (message, data)  {
 				var obj = this.__receive[message];
 				if (obj)
-					obj[message].apply(obj, data);
+					obj.intf[message].apply(obj, data);
 			},
 			
 			_receiveMessage: function (data) {
@@ -422,8 +422,10 @@ Scoped.define("module:Host.LocalStorageAugment", [
 
 Scoped.define("module:Host.PseudoWorker", [
     "base:Class",
-    "base:Events.EventsMixin"
-], function (Class, EventsMixin, scoped) {
+    "base:Events.EventsMixin",
+    "base:Functions",
+    "module:Common.AugmentedWorker"
+], function (Class, EventsMixin, Functions, AugmentedWorker, scoped) {
 	
 	/**
 	 * PseudoWorker Class, emulating a worker in the same thread.
@@ -474,11 +476,14 @@ Scoped.define("module:Host.PseudoWorker", [
 		 * Try to create a new native worker.
 		 * 
 		 * @param {string} url URL for worker
+		 * @param {array} augments optional augments
 		 * @return {object} Worker object or null
 		 */
-		createWorker: function (url) {
+		createWorker: function (url, augments) {
 			try {
-				return new Worker(url);
+				var worker = new Worker(url);
+				if (augments && augments.length > 0)
+					return new AugmentedWorker(worker, augments);
 			} catch (e) {
 				return null;
 			}
@@ -504,12 +509,19 @@ Scoped.define("module:Host.PseudoWorker", [
 		 * Creates a new native worker and falls back to pseudo worker if not possible.
 		 * 
 		 * @param {string} url URL for worker
+		 * @param {array} augments optional augments array
 		 * @param {function} workerFactory Factory function for setting up the worker
 		 * @param {object} workerFactoryCtx Context for factory function
 		 * @return {object} New worker object
 		 */
-		createAsFallback: function (url, workerFactory, workerFactoryCtx) {
-			return this.createWorker(url) || this.createPseudoWorker(workerFactory, workerFactoryCtx);
+		createAsFallback: function () {
+			var args = Functions.matchArgs(arguments, {
+				url: true,
+				augments: "array",
+				workerFactory: true,
+				workerFactoryCtx: "object"
+			});
+			return this.createWorker(args.url, args.augments) || this.createPseudoWorker(args.workerFactory, args.workerFactoryCtx);
 		}
 		
 	});

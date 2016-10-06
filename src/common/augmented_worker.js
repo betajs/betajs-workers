@@ -57,7 +57,7 @@ Scoped.define("module:Common.AugmentedWorker", [
 			_receiveAugment: function (message, data)  {
 				var obj = this.__receive[message];
 				if (obj)
-					obj[message].apply(obj, data);
+					obj.intf[message].apply(obj, data);
 			},
 			
 			_receiveMessage: function (data) {
