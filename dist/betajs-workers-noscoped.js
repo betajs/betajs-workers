@@ -1,5 +1,5 @@
 /*!
-betajs-workers - v0.0.4 - 2016-10-06
+betajs-workers - v0.0.5 - 2016-10-08
 Copyright (c) Oliver Friedmann
 Apache-2.0 Software License.
 */
@@ -11,7 +11,7 @@ Scoped.binding('base', 'global:BetaJS');
 Scoped.define("module:", function () {
 	return {
     "guid": "9f1e96ea-528c-4110-83f8-76fa9a8900d3",
-    "version": "4.1475768410002"
+    "version": "5.1475944405984"
 };
 });
 Scoped.assumeVersion('base:version', 557);
@@ -291,7 +291,7 @@ Scoped.define("module:Common.WorkerSenderChannel", [
 				var transfer = [];
 				if (serializerInfo) {
 					Objs.iter(serializerInfo, function (value, key) {
-						if (value && value.transfer && data[key])
+						if (value && value.transfer && data.data[key])
 							transfer.push(data[key]);
 					}, this);
 				}

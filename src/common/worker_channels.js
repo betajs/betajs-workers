@@ -28,7 +28,7 @@ Scoped.define("module:Common.WorkerSenderChannel", [
 				var transfer = [];
 				if (serializerInfo) {
 					Objs.iter(serializerInfo, function (value, key) {
-						if (value && value.transfer && data[key])
+						if (value && value.transfer && data.data[key])
 							transfer.push(data[key]);
 					}, this);
 				}
