@@ -1,6 +1,7 @@
 # betajs-workers 0.0.5
 [![Build Status](https://api.travis-ci.org/betajs/betajs-workers.svg?branch=master)](https://travis-ci.org/betajs/betajs-workers)
 [![Code Climate](https://codeclimate.com/github/betajs/betajs-workers/badges/gpa.svg)](https://codeclimate.com/github/betajs/betajs-workers)
+[![NPM](https://img.shields.io/npm/v/betajs-workers.svg?style=flat)](https://www.npmjs.com/package/betajs-workers)
 
 
 BetaJS-Workers is a light-weight library for accessing web workers uniformly and conveniently.
@@ -47,9 +48,10 @@ This module allows you to communicate with webworkers and to augment webworkers 
 | :--------- | --: |
 | Homepage   | [http://betajs.com](http://betajs.com) |
 | Git        | [git://github.com/betajs/betajs-workers.git](git://github.com/betajs/betajs-workers.git) |
-| Repository | [http://github.com/betajs/betajs-workers](http://github.com/betajs/betajs-workers) |
+| Repository | [https://github.com/betajs/betajs-workers](https://github.com/betajs/betajs-workers) |
 | Blog       | [http://blog.betajs.com](http://blog.betajs.com) | 
 | Twitter    | [http://twitter.com/thebetajs](http://twitter.com/thebetajs) | 
+ 
 
 
 
@@ -94,13 +96,22 @@ This module allows you to communicate with webworkers and to augment webworkers 
 | betajs-scoped | [Open](https://github.com/betajs/betajs-scoped) |
 
 
-## Contributors
+## Main Contributors
 
 - Oliver Friedmann
-
 
 ## License
 
 Apache-2.0
+
+
+
+
+
+
+## Sponsors
+
+- Ziggeo
+- Browserstack
 
 

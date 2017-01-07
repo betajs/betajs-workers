@@ -34,13 +34,14 @@
 		"test": "grunt check"
 	},
 	"meta": {
+		"sponsors": ["Ziggeo", "Browserstack"],
 		"guid": "9f1e96ea-528c-4110-83f8-76fa9a8900d3",
 		"installdoc": "docsrc/common/install.md",
 		"summarydoc": "docsrc/common/summary.md",
 		"badges": {
 			"codeclimate": true,
 			"travis": true,
-			"npm": false
+			"npm": true
 		},
 		"compatability": {
 			"Firefox": "4 - Latest",
