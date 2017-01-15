@@ -36,7 +36,6 @@ You can use the library in the browser, in your NodeJS project, webworkers and c
 ```
 
 
-
 ## Basic Usage
 
 
