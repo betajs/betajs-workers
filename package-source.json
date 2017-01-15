@@ -40,7 +40,7 @@
 		"summarydoc": "docsrc/common/summary.md",
 		"badges": {
 			"codeclimate": true,
-			"travis": true,
+			"travis": false,
 			"npm": true
 		},
 		"compatability": {

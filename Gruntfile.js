@@ -30,7 +30,6 @@ module.exports = function(grunt) {
     
     /* External Configurations */
     .codeclimateTask()
-    .travisTask(null, "0.11")
     .packageTask()
     
     /* Markdown Files */
@@ -42,7 +41,7 @@ module.exports = function(grunt) {
 
 	grunt.initConfig(gruntHelper.config);	
 
-	grunt.registerTask('default', ['package', 'readme', 'license', 'codeclimate', 'travis', 'scopedclosurerevision', 'concat-scoped', 'uglify-noscoped', 'uglify-scoped']);
+	grunt.registerTask('default', ['package', 'readme', 'license', 'codeclimate', 'scopedclosurerevision', 'concat-scoped', 'uglify-noscoped', 'uglify-scoped']);
 	grunt.registerTask('check', [ 'lint', 'qunit', 'browserqunit' ]);
 
 };
