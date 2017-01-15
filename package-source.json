@@ -1,6 +1,6 @@
 {
 	"name": "betajs-workers",
-	"version": "0.0.5",
+	"version": "0.0.6",
 	"description": "BetaJS-Workers is a light-weight library for accessing web workers uniformly and conveniently.",
 	"contributors": ["Oliver Friedmann"],
 	"devDependencies": {
@@ -11,20 +11,19 @@
 		"grunt-contrib-uglify": "",
 		"grunt-contrib-clean": "",
 		"grunt-preprocess": "",
-		"grunt-git-revision-count": "",
 		"grunt-closure-tools": "",
 		"grunt-node-qunit": "",
         "qunit": "",
-		"grunt-wget": "",
 		"grunt-jsdoc": "",
 		"grunt-shell": "",
 		"grunt-contrib-connect": "",
 		"webworker-threads": "",
 		"grunt-template": "",
 		"grunt-benchmark": "",
-		"grunt-betajs-docs-compile": "",
-		"betajs-scoped": "",
-		"betajs-compile": "betajs/betajs-compile"
+	    "grunt-betajs-docs-compile":"~0.0.19",
+	    "betajs-scoped": "~0.0.13",
+	    "betajs-compile": "~0.0.28",
+	    "betajs": "~1.0.96"
 	},
 	"repository": {
 		"type": "git",
@@ -33,6 +32,7 @@
 	"scripts": {
 		"test": "grunt check"
 	},
+	"main": "dist/betajs-workers.js",
 	"meta": {
 		"sponsors": ["Ziggeo", "Browserstack"],
 		"guid": "9f1e96ea-528c-4110-83f8-76fa9a8900d3",

@@ -1,5 +1,5 @@
 /*!
-betajs-workers - v0.0.5 - 2016-10-08
+betajs-workers - v0.0.6 - 2017-01-15
 Copyright (c) Oliver Friedmann
 Apache-2.0 Software License.
 */
@@ -11,10 +11,10 @@ Scoped.binding('base', 'global:BetaJS');
 Scoped.define("module:", function () {
 	return {
     "guid": "9f1e96ea-528c-4110-83f8-76fa9a8900d3",
-    "version": "5.1475944405984"
+    "version": "0.0.6"
 };
 });
-Scoped.assumeVersion('base:version', 557);
+Scoped.assumeVersion('base:version', '~1.0.96');
 Scoped.define("module:Client.TimerAugment", [
 	"module:Common.WorkerAugment",
 	"base:Functions",

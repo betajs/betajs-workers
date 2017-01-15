@@ -1,4 +1,4 @@
-# betajs-workers 0.0.5
+# betajs-workers 0.0.6
 [![Build Status](https://api.travis-ci.org/betajs/betajs-workers.svg?branch=master)](https://travis-ci.org/betajs/betajs-workers)
 [![Code Climate](https://codeclimate.com/github/betajs/betajs-workers/badges/gpa.svg)](https://codeclimate.com/github/betajs/betajs-workers)
 [![NPM](https://img.shields.io/npm/v/betajs-workers.svg?style=flat)](https://www.npmjs.com/package/betajs-workers)
