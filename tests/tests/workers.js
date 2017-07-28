@@ -9,96 +9,111 @@ if (module && ("exports" in module)) {
 }
 	
 
-test("echo worker plain", function () {
+QUnit.test("echo worker plain", function (assert) {
 	var worker = new Worker(getWorkerPath("echo_worker_plain.js"));
 	worker.addEventListener("message", function (data) {
-		QUnit.deepEqual(data.data, {echo: {foobar: "test"}});
-		start();
+		assert.deepEqual(data.data, {echo: {foobar: "test"}});
+		worker.terminate();
+		done();
 	});
 	worker.addEventListener("error", function () {
-		ok(false);
-		start();
+        assert.ok(false);
+		done();
 	});
 	worker.postMessage({foobar: "test"});
-	stop();
+	var done = assert.async();
 });
 
-test("echo worker augmented", function () {
-	var worker = new Worker(getWorkerPath("echo_worker_augmented.js"));
-	worker = new BetaJS.Workers.Common.AugmentedWorker(worker, []);
-	worker.addEventListener("message", function (data) {
-		QUnit.deepEqual(data.data, {echo: {foobar: "test"}});
-		start();
-	});
-	worker.addEventListener("error", function () {
-		ok(false);
-		start();
-	});
-	worker.postMessage({foobar: "test"});
-	stop();
+
+QUnit.test("echo worker augmented", function (assert) {
+    var workerInner = new Worker(getWorkerPath("echo_worker_augmented.js"));
+    worker = new BetaJS.Workers.Common.AugmentedWorker(workerInner, []);
+    worker.addEventListener("message", function (data) {
+        assert.deepEqual(data.data, {echo: {foobar: "test"}});
+        worker.destroy();
+        workerInner.terminate();
+        done();
+    });
+    worker.addEventListener("error", function () {
+        assert.ok(false);
+        done();
+    });
+    worker.postMessage({foobar: "test"});
+    var done = assert.async();
 });
 
-test("echo worker rmi", function () {
-	var worker = new Worker(getWorkerPath("echo_worker_rmi.js"));
-	worker = new BetaJS.Workers.Common.AugmentedWorker(worker, ["host:timer"]);
-	var client = new BetaJS.RMI.Client();
-	client.connectTransport(new BetaJS.Workers.Common.WorkerSenderChannel(worker), new BetaJS.Workers.Common.WorkerReceiverChannel(worker));
-	var Echo = BetaJS.RMI.Stub.extend("Echo", { intf: ["echo"] });
-	echoStub = client.acquire(Echo, "echo");
-	stop();
-	echoStub.echo({foobar: "test"}).success(function (data) {
-		QUnit.deepEqual(data, {echo: {foobar: "test"}});
-		start();
-	}).error(function () {
-		ok(false);
-		start();
-	});
+QUnit.test("echo worker rmi", function (assert) {
+    var workerInner = new Worker(getWorkerPath("echo_worker_rmi.js"));
+    worker = new BetaJS.Workers.Common.AugmentedWorker(workerInner, ["host:timer"]);
+    var client = new BetaJS.RMI.Client();
+    var sender = new BetaJS.Workers.Common.WorkerSenderChannel(worker);
+    var receiver = new BetaJS.Workers.Common.WorkerReceiverChannel(worker);
+    client.connectTransport(sender, receiver);
+    var Echo = BetaJS.RMI.Stub.extend("Echo", { intf: ["echo"] });
+    echoStub = client.acquire(Echo, "echo");
+    var done = assert.async();
+    echoStub.echo({foobar: "test"}).success(function (data) {
+        assert.deepEqual(data, {echo: {foobar: "test"}});
+        client.destroy();
+        worker.destroy();
+        workerInner.terminate();
+        done();
+    }).error(function () {
+        assert.ok(false);
+        done();
+    });
 });
 
-test("error worker plain", function () {
-	var worker = new Worker(getWorkerPath("error_worker_plain.js"));
-	worker.addEventListener("message", function (data) {
-		ok(false);
-		start();
-	});
-	worker.addEventListener("error", function (e) {
-		ok(true);
-		start();
-		e.preventDefault();
-	});
-	worker.postMessage({});
-	stop();
-});
-	
-test("error worker augmented", function () {
-	var worker = new Worker(getWorkerPath("error_worker_augmented.js"));
-	worker = new BetaJS.Workers.Common.AugmentedWorker(worker, []);
-	worker.addEventListener("message", function (data) {
-		ok(false);
-		start();
-	});
-	worker.addEventListener("error", function (e) {
-		ok(true);
-		start();
-		e.preventDefault();
-	});
-	worker.postMessage({});
-	stop();
+QUnit.test("error worker plain", function (assert) {
+    var done = assert.async();
+    var worker = new Worker(getWorkerPath("error_worker_plain.js"));
+    worker.addEventListener("message", function (data) {
+        assert.ok(false);
+        done();
+    });
+    worker.addEventListener("error", function (e) {
+        worker.terminate();
+        assert.ok(true);
+        done();
+        e.preventDefault();
+    });
+    worker.postMessage({});
 });
 
-test("error worker rmi", function () {
-	var worker = new Worker(getWorkerPath("error_worker_rmi.js"));
-	worker = new BetaJS.Workers.Common.AugmentedWorker(worker, ["host:timer"]);
-	var client = new BetaJS.RMI.Client();
-	client.connectTransport(new BetaJS.Workers.Common.WorkerSenderChannel(worker), new BetaJS.Workers.Common.WorkerReceiverChannel(worker));
-	var Error = BetaJS.RMI.Stub.extend("Error", { intf: ["error"] });
-	errorStub = client.acquire(Error, "error");
-	stop();
-	errorStub.error("test").success(function () {
-		ok(false);
-		start();
-	}).error(function () {
-		ok(true);
-		start();
-	});
+QUnit.test("error worker augmented", function (assert) {
+    var done = assert.async();
+    var workerInner = new Worker(getWorkerPath("error_worker_augmented.js"));
+    worker = new BetaJS.Workers.Common.AugmentedWorker(workerInner, []);
+    worker.addEventListener("message", function (data) {
+        assert.ok(false);
+        done();
+    });
+    worker.addEventListener("error", function (e) {
+        assert.ok(true);
+        worker.destroy();
+        workerInner.terminate();
+        done();
+        e.preventDefault();
+    });
+    worker.postMessage({});
+});
+
+QUnit.test("error worker rmi", function (assert) {
+    var workerInner = new Worker(getWorkerPath("error_worker_rmi.js"));
+    worker = new BetaJS.Workers.Common.AugmentedWorker(workerInner, ["host:timer"]);
+    var client = new BetaJS.RMI.Client();
+    client.connectTransport(new BetaJS.Workers.Common.WorkerSenderChannel(worker), new BetaJS.Workers.Common.WorkerReceiverChannel(worker));
+    var Error = BetaJS.RMI.Stub.extend("Error", { intf: ["error"] });
+    errorStub = client.acquire(Error, "error");
+    var done = assert.async();
+    errorStub.error("test").success(function () {
+        assert.ok(false);
+        done();
+    }).error(function () {
+        assert.ok(true);
+        client.destroy();
+        worker.destroy();
+        workerInner.terminate();
+        done();
+    });
 });

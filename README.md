@@ -1,7 +1,7 @@
-# betajs-workers 0.0.6
+# betajs-workers 0.0.7
 [![Code Climate](https://codeclimate.com/github/betajs/betajs-workers/badges/gpa.svg)](https://codeclimate.com/github/betajs/betajs-workers)
 [![NPM](https://img.shields.io/npm/v/betajs-workers.svg?style=flat)](https://www.npmjs.com/package/betajs-workers)
-
+[![Gitter Chat](https://badges.gitter.im/betajs/betajs-workers.svg)](https://gitter.im/betajs/betajs-workers)
 
 BetaJS-Workers is a light-weight library for accessing web workers uniformly and conveniently.
 
@@ -50,21 +50,15 @@ This module allows you to communicate with webworkers and to augment webworkers 
 | Repository | [https://github.com/betajs/betajs-workers](https://github.com/betajs/betajs-workers) |
 | Blog       | [http://blog.betajs.com](http://blog.betajs.com) | 
 | Twitter    | [http://twitter.com/thebetajs](http://twitter.com/thebetajs) | 
- 
+| Gitter     | [https://gitter.im/betajs/betajs-workers](https://gitter.im/betajs/betajs-workers) | 
 
 
 
 ## Compatability
 | Target | Versions |
 | :----- | -------: |
-| Firefox | 4 - Latest |
-| Chrome | 15 - Latest |
-| Safari | 4 - Latest |
-| Opera | 12 - Latest |
-| Internet Explorer | 6 - Latest |
-| Edge | 12 - Latest |
-| iOS | 7.0 - Latest |
-| Android | 4.0 - Latest |
+| Safari | 6 - Latest |
+| Android | 4.4 - Latest |
 | NodeJS | 0.10 - Latest |
 
 

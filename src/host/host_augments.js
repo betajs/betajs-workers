@@ -1,6 +1,7 @@
 Scoped.define("module:Host.TimerAugment", [
-	"module:Common.WorkerAugment"
-], function (WorkerAugment, scoped) {
+	"module:Common.WorkerAugment",
+	"base:Objs"
+], function (WorkerAugment, Objs, scoped) {
 	return WorkerAugment.extend({scoped: scoped}, function (inherited) {
 		return {
 						

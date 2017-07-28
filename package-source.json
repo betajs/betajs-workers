@@ -1,6 +1,6 @@
 {
 	"name": "betajs-workers",
-	"version": "0.0.6",
+	"version": "0.0.7",
 	"description": "BetaJS-Workers is a light-weight library for accessing web workers uniformly and conveniently.",
 	"contributors": ["Oliver Friedmann"],
 	"devDependencies": {
@@ -12,8 +12,7 @@
 		"grunt-contrib-clean": "",
 		"grunt-preprocess": "",
 		"grunt-closure-tools": "",
-		"grunt-node-qunit": "",
-        "qunit": "",
+        "qunitjs": "",
 		"grunt-jsdoc": "",
 		"grunt-shell": "",
 		"grunt-contrib-connect": "",
@@ -41,18 +40,20 @@
 		"badges": {
 			"codeclimate": true,
 			"travis": false,
-			"npm": true
+			"npm": true,
+			"gitter": true
 		},
 		"compatability": {
-			"Firefox": "4 - Latest",
-			"Chrome": "15 - Latest",
-			"Safari": "4 - Latest",
+			"Firefox": "21 - Latest",
+			"Safari": "6 - Latest",
+			"Internet Explorer": "Latest",
+			"Chrome": "18 - Latest",
 			"Opera": "12 - Latest",
-			"Internet Explorer": "6 - Latest",
 			"Edge": "12 - Latest",
 			"iOS": "7.0 - Latest",
-			"Android": "4.0 - Latest",
-			"NodeJS": "0.10 - Latest" 
+			"Yandex": "Latest",
+			"Android": "4.4 - Latest",
+			"NodeJS": "0.10 - Latest"
 		},
 		"weakDependencies": {
 			"betajs-scoped": "https://github.com/betajs/betajs-scoped"
