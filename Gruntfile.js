@@ -27,6 +27,7 @@ module.exports = function(grunt) {
     
     /* External Configurations */
     .codeclimateTask()
+	.travisTask(null, "4.0")
     .packageTask()
     
     /* Markdown Files */
