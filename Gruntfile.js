@@ -40,6 +40,7 @@ module.exports = function(grunt) {
 	grunt.initConfig(gruntHelper.config);	
 
 	grunt.registerTask('default', ['package', 'readme', 'license', 'codeclimate', 'scopedclosurerevision', 'concat-scoped', 'uglify-noscoped', 'uglify-scoped']);
-	grunt.registerTask('check', [ 'lint', 'qunitjs', 'browserqunit' ]);
+    grunt.registerTask('check-node', [ 'lint', 'qunitjs' ]);
+	grunt.registerTask('check', [ 'check-node', 'browserqunit' ]);
 
 };
