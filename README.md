@@ -45,11 +45,11 @@ This module allows you to communicate with webworkers and to augment webworkers 
 ## Links
 | Resource   | URL |
 | :--------- | --: |
-| Homepage   | [http://betajs.com](http://betajs.com) |
+| Homepage   | [https://betajs.com](https://betajs.com) |
 | Git        | [git://github.com/betajs/betajs-workers.git](git://github.com/betajs/betajs-workers.git) |
 | Repository | [https://github.com/betajs/betajs-workers](https://github.com/betajs/betajs-workers) |
-| Blog       | [http://blog.betajs.com](http://blog.betajs.com) | 
-| Twitter    | [http://twitter.com/thebetajs](http://twitter.com/thebetajs) | 
+| Blog       | [https://blog.betajs.com](https://blog.betajs.com) | 
+| Twitter    | [https://twitter.com/thebetajs](https://twitter.com/thebetajs) | 
 | Gitter     | [https://gitter.im/betajs/betajs-workers](https://gitter.im/betajs/betajs-workers) | 
 
 
@@ -57,9 +57,16 @@ This module allows you to communicate with webworkers and to augment webworkers 
 ## Compatability
 | Target | Versions |
 | :----- | -------: |
+| Firefox | 21 - Latest |
 | Safari | 6 - Latest |
+| Internet Explorer | Latest |
+| Chrome | 18 - Latest |
+| Opera | 12 - Latest |
+| Edge | 12 - Latest |
+| iOS | 7.0 - Latest |
+| Yandex | Latest |
 | Android | 4.4 - Latest |
-| NodeJS | 0.10 - Latest |
+| NodeJS | 4.0 - Latest |
 
 
 ## CDN
