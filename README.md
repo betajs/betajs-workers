@@ -1,4 +1,4 @@
-# betajs-workers 0.0.7
+# betajs-workers 0.0.8
 [![Code Climate](https://codeclimate.com/github/betajs/betajs-workers/badges/gpa.svg)](https://codeclimate.com/github/betajs/betajs-workers)
 [![NPM](https://img.shields.io/npm/v/betajs-workers.svg?style=flat)](https://www.npmjs.com/package/betajs-workers)
 [![Gitter Chat](https://badges.gitter.im/betajs/betajs-workers.svg)](https://gitter.im/betajs/betajs-workers)

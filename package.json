@@ -15,7 +15,7 @@
         "url": "https://github.com/betajs/betajs-workers/issues"
     },
     "name": "betajs-workers",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "description": "BetaJS-Workers is a light-weight library for accessing web workers uniformly and conveniently.",
     "contributors": [
         "Oliver Friedmann"

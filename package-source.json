@@ -1,75 +1,80 @@
 {
-	"name": "betajs-workers",
-	"version": "0.0.7",
-	"description": "BetaJS-Workers is a light-weight library for accessing web workers uniformly and conveniently.",
-	"contributors": ["Oliver Friedmann"],
-	"devDependencies": {
-    	"lodash": "",
-		"grunt": "",
-		"grunt-contrib-jshint": "",
-		"grunt-contrib-concat": "",
-		"grunt-contrib-uglify": "~2.3.0",
-		"grunt-contrib-clean": "",
-		"grunt-preprocess": "",
-		"grunt-closure-tools": "",
+    "name": "betajs-workers",
+    "version": "0.0.8",
+    "description": "BetaJS-Workers is a light-weight library for accessing web workers uniformly and conveniently.",
+    "contributors": [
+        "Oliver Friedmann"
+    ],
+    "devDependencies": {
+        "lodash": "",
+        "grunt": "",
+        "grunt-contrib-jshint": "",
+        "grunt-contrib-concat": "",
+        "grunt-contrib-uglify": "~2.3.0",
+        "grunt-contrib-clean": "",
+        "grunt-preprocess": "",
+        "grunt-closure-tools": "",
         "qunitjs": "",
-		"grunt-jsdoc": "",
-		"grunt-shell": "",
-		"grunt-contrib-connect": "",
-		"webworker-threads": "",
-		"grunt-template": "",
-		"grunt-benchmark": "",
-	    "grunt-betajs-docs-compile":"~0.0.19",
-	    "betajs-scoped": "~0.0.13",
-	    "betajs-compile": "~0.0.28",
-	    "betajs": "~1.0.96"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git://github.com/betajs/betajs-workers.git"
-	},
-	"scripts": {
-		"test": "grunt check-node",
-		"relink": "npm link betajs && npm link betajs-compile && npm link betajs-scoped"
-	},
-	"main": "dist/betajs-workers.js",
-	"meta": {
-		"sponsors": ["Ziggeo", "Browserstack"],
-		"guid": "9f1e96ea-528c-4110-83f8-76fa9a8900d3",
-		"installdoc": "docsrc/common/install.md",
-		"summarydoc": "docsrc/common/summary.md",
-		"badges": {
-			"codeclimate": true,
-			"travis": false,
-			"npm": true,
-			"gitter": true
-		},
-		"compatability": {
-			"Firefox": "21 - Latest",
-			"Safari": "6 - Latest",
-			"Internet Explorer": "Latest",
-			"Chrome": "18 - Latest",
-			"Opera": "12 - Latest",
-			"Edge": "12 - Latest",
-			"iOS": "7.0 - Latest",
-			"Yandex": "Latest",
-			"Android": "4.4 - Latest",
-			"NodeJS": "4.0 - Latest"
-		},
-		"weakDependencies": {
-			"betajs-scoped": "https://github.com/betajs/betajs-scoped"
-		},
-		"dependencies": {
-			"betajs": "https://github.com/betajs/betajs"
-		},
-		"tests": {
-			"Test Suite": "http://rawgit.com/betajs/betajs-workers/master/tests/tests.html"
-		},
-		"cdn": {
-			"betajs-workers.js": "http://cdn.rawgit.com/betajs/betajs-workers/master/dist/betajs-workers.js",
-			"betajs-workers.min.js": "http://cdn.rawgit.com/betajs/betajs-workers/master/dist/betajs-workers.min.js",
-			"betajs-workers-noscoped.js": "http://cdn.rawgit.com/betajs/betajs-workers/master/dist/betajs-workers-noscoped.js",
-			"betajs-workers-noscoped.min.js": "http://cdn.rawgit.com/betajs/betajs-workers/master/dist/betajs-workers-noscoped.min.js"
-		}
-	} 
+        "grunt-jsdoc": "",
+        "grunt-shell": "",
+        "grunt-contrib-connect": "",
+        "webworker-threads": "",
+        "grunt-template": "",
+        "grunt-benchmark": "",
+        "grunt-betajs-docs-compile": "~0.0.19",
+        "betajs-scoped": "~0.0.13",
+        "betajs-compile": "~0.0.28",
+        "betajs": "~1.0.96"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/betajs/betajs-workers.git"
+    },
+    "scripts": {
+        "test": "grunt check-node",
+        "relink": "npm link betajs && npm link betajs-compile && npm link betajs-scoped"
+    },
+    "main": "dist/betajs-workers.js",
+    "meta": {
+        "sponsors": [
+            "Ziggeo",
+            "Browserstack"
+        ],
+        "guid": "9f1e96ea-528c-4110-83f8-76fa9a8900d3",
+        "installdoc": "docsrc/common/install.md",
+        "summarydoc": "docsrc/common/summary.md",
+        "badges": {
+            "codeclimate": true,
+            "travis": false,
+            "npm": true,
+            "gitter": true
+        },
+        "compatability": {
+            "Firefox": "21 - Latest",
+            "Safari": "6 - Latest",
+            "Internet Explorer": "Latest",
+            "Chrome": "18 - Latest",
+            "Opera": "12 - Latest",
+            "Edge": "12 - Latest",
+            "iOS": "7.0 - Latest",
+            "Yandex": "Latest",
+            "Android": "4.4 - Latest",
+            "NodeJS": "4.0 - Latest"
+        },
+        "weakDependencies": {
+            "betajs-scoped": "https://github.com/betajs/betajs-scoped"
+        },
+        "dependencies": {
+            "betajs": "https://github.com/betajs/betajs"
+        },
+        "tests": {
+            "Test Suite": "http://rawgit.com/betajs/betajs-workers/master/tests/tests.html"
+        },
+        "cdn": {
+            "betajs-workers.js": "http://cdn.rawgit.com/betajs/betajs-workers/master/dist/betajs-workers.js",
+            "betajs-workers.min.js": "http://cdn.rawgit.com/betajs/betajs-workers/master/dist/betajs-workers.min.js",
+            "betajs-workers-noscoped.js": "http://cdn.rawgit.com/betajs/betajs-workers/master/dist/betajs-workers-noscoped.js",
+            "betajs-workers-noscoped.min.js": "http://cdn.rawgit.com/betajs/betajs-workers/master/dist/betajs-workers-noscoped.min.js"
+        }
+    }
 }

@@ -28,6 +28,7 @@ module.exports = function(grunt) {
     /* External Configurations */
     .codeclimateTask()
 	.travisTask(null, "4.0")
+	.autoincreasepackageTask(null, "package-source.json")
     .packageTask()
     
     /* Markdown Files */
@@ -39,7 +40,7 @@ module.exports = function(grunt) {
 
 	grunt.initConfig(gruntHelper.config);	
 
-	grunt.registerTask('default', ['package', 'readme', 'license', 'codeclimate', 'scopedclosurerevision', 'concat-scoped', 'uglify-noscoped', 'uglify-scoped']);
+	grunt.registerTask('default', ['autoincreasepackage', 'package', 'readme', 'license', 'codeclimate', 'scopedclosurerevision', 'concat-scoped', 'uglify-noscoped', 'uglify-scoped']);
     grunt.registerTask('check-node', [ 'lint', 'qunitjs' ]);
 	grunt.registerTask('check', [ 'check-node', 'browserqunit' ]);
 
