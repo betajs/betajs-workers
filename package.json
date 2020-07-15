@@ -33,7 +33,6 @@
         "grunt-jsdoc": "",
         "grunt-shell": "",
         "grunt-contrib-connect": "",
-        "webworker-threads": "",
         "grunt-template": "",
         "grunt-benchmark": "",
         "grunt-betajs-docs-compile": "~0.0.19",
@@ -47,6 +46,7 @@
     },
     "scripts": {
         "test": "grunt check-node",
+        "reinstall": "rm -f package-lock.json && rm -rf node_modules && npm i && npm run relink",
         "relink": "npm link betajs && npm link betajs-compile && npm link betajs-scoped"
     },
     "main": "dist/betajs-workers.js",
